@@ -20,8 +20,10 @@ jobs:
           distribution: 'adopt'
           cache: maven
       - name: Build with Maven
-        run: mvn test
+        run: mvn clean install
+      - name: Run Tests with Code Coverage
+        run: mvn test jacoco:report
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
