@@ -21,6 +21,7 @@ public class StartUp {
     public StartUp(Server server, Client client, Serializer<RpcProtocol> serializer, DeSerializer<RpcProtocol> deSerializer) {
         this.server = server;
         this.client = client;
+
         this.serializer = serializer;
         this.deSerializer = deSerializer;
     }
