@@ -24,7 +24,12 @@ public class RpcProtocol {
     // 消息唯一 id
     private long messageId;
     // header 扩展字段
-    private String headerExtend;
+    private byte[] headerExtend;
     // 消息体
     private byte[] payload;
+
+    public long getHeaderTotalSize() {
+        return Long.BYTES * 4 + Integer.BYTES * 3 + headerExtend.length;
+    }
+
 }
