@@ -26,8 +26,7 @@ public class StartUp {
     }
 
     public void go() throws Exception {
-        server.start();
-        client.startUp();
+        server.startServer();
     }
 
     public void send(Object data) throws Exception {

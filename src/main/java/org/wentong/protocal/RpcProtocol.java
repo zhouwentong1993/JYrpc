@@ -1,11 +1,13 @@
 package org.wentong.protocal;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
  * RPC 协议
  */
 @Data
+@Builder
 public class RpcProtocol {
     // Magic Number
     private long magicNumber;

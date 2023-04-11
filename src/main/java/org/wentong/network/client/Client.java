@@ -10,5 +10,4 @@ public interface Client {
      */
     byte[] send(byte[] data) throws Exception;
 
-    void startUp() throws Exception;
 }

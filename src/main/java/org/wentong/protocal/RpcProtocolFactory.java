@@ -4,7 +4,10 @@ public class RpcProtocolFactory {
 
     // todo
     public static RpcProtocol getProtocolData(Object data) {
-        return new RpcProtocol();
+        return RpcProtocol.builder()
+                .magicNumber(0x12345678)
+
+                .build();
     }
 
 }
