@@ -5,10 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.wentong.network.server.Server;
 import org.wentong.thread.ServiceThread;
 
-import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -36,19 +35,18 @@ public class BioServer extends ServiceThread implements Server {
 
 
         while (true) {
-            try (
-                    Socket clientSocket = serverSocket.accept();
-                    BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                    OutputStreamWriter out = new OutputStreamWriter(clientSocket.getOutputStream());
-            ) {
+            try (Socket clientSocket = serverSocket.accept()) {
                 log.info("Accepted connection from: {}", clientSocket.getInetAddress());
                 log.info("Server thread is: {}", Thread.currentThread().getName());
-
-                String request = in.readLine();
-                log.info("Received from {}, data: {}", clientSocket.getInetAddress(), request);
-                String response = "Bio data for user " + request; // 这里根据实际情况返回特定用户的bio
-                out.write(response);
-                out.flush();
+                InputStream inputStream = clientSocket.getInputStream();
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[4096];
+                int len;
+                while ((len = inputStream.read(buffer)) != -1) {
+                    clientSocket.getOutputStream().write(buffer);
+                }
+                byte[] data = outputStream.toByteArray();
+                log.info("Received data: {}", new String(data));
             } catch (IOException e) {
                 System.err.println("Error handling client request: " + e.getMessage());
             }

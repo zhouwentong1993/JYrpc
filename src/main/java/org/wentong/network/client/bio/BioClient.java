@@ -16,6 +16,7 @@ public class BioClient implements Client {
     public byte[] send(byte[] data) throws Exception {
         try (Socket socket = new Socket("localhost", 8088)) {
             log.info("connected to server");
+            log.info("Thread name: {}", Thread.currentThread().getName());
             socket.getOutputStream().write(data);
             return IoUtil.readBytes(socket.getInputStream());
         }
