@@ -44,7 +44,7 @@ public class StartUp {
     public static void main(String[] args) throws Exception {
         StartUp startUp = new StartUp(new BioServer(), new BioClient(), new JSONSerializer<>(), new JSONDeserializer<>());
         startUp.go();
-//        startUp.send("hello");
+        startUp.send("hello");
     }
 
 }

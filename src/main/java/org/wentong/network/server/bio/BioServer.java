@@ -5,9 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.wentong.network.server.Server;
 import org.wentong.thread.ServiceThread;
 
-import java.io.ByteArrayOutputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -30,25 +31,56 @@ public class BioServer extends ServiceThread implements Server {
     @SneakyThrows
     @Override
     public void doService() {
-        ServerSocket serverSocket = new ServerSocket(8088);
-        log.info("Server started on port:{}", 8088);
+        int port = 8088;
+        ServerSocket server = null;
+        try {
+            server = new ServerSocket(port);
+            System.out.println("The time server is start in port : " + port);
+            Socket socket;
+            while (true) {
+                socket = server.accept();
+                BufferedReader in = null;
+                PrintWriter out = null;
+                try {
+                    in = new BufferedReader(new InputStreamReader(
+                            socket.getInputStream()));
+                    out = new PrintWriter(socket.getOutputStream(), true);
+                    String currentTime = null;
+                    String body = null;
+                    while (true) {
+                        body = in.readLine();
+                        if (body == null) {
+                            break;
+                        }
+                        System.out.println("The time server receive order : " + body);
+                        currentTime = "QUERY TIME ORDER".equalsIgnoreCase(body) ? new java.util.Date(
+                                System.currentTimeMillis()).toString() : "BAD ORDER";
+                        out.println(currentTime);
+                    }
 
-
-        while (true) {
-            try (Socket clientSocket = serverSocket.accept()) {
-                log.info("Accepted connection from: {}", clientSocket.getInetAddress());
-                log.info("Server thread is: {}", Thread.currentThread().getName());
-                InputStream inputStream = clientSocket.getInputStream();
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                byte[] buffer = new byte[4096];
-                int len;
-                while ((len = inputStream.read(buffer)) != -1) {
-                    clientSocket.getOutputStream().write(buffer);
-                }
-                byte[] data = outputStream.toByteArray();
-                log.info("Received data: {}", new String(data));
-            } catch (IOException e) {
-                System.err.println("Error handling client request: " + e.getMessage());
+                } catch (Exception e) {
+                    if (in != null) {
+                        try {
+                            in.close();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    if (out != null) {
+                        out.close();
+                    }
+                    if (socket != null) {
+                        try {
+                            socket.close();
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                }            }
+        } finally {
+            if (server != null) {
+                System.out.println("The time server close");
+                server.close();
             }
         }
     }
