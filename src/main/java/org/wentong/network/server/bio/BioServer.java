@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
 
 @Slf4j
 public class BioServer extends ServiceThread implements Server {
@@ -35,7 +36,7 @@ public class BioServer extends ServiceThread implements Server {
         ServerSocket server = null;
         try {
             server = new ServerSocket(port);
-            System.out.println("The time server is start in port : " + port);
+            log.info("Server start on port: {}", port);
             Socket socket;
             while (true) {
                 socket = server.accept();
@@ -45,17 +46,20 @@ public class BioServer extends ServiceThread implements Server {
                     in = new BufferedReader(new InputStreamReader(
                             socket.getInputStream()));
                     out = new PrintWriter(socket.getOutputStream(), true);
-                    String currentTime = null;
-                    String body = null;
+                    String body;
                     while (true) {
                         body = in.readLine();
                         if (body == null) {
                             break;
                         }
-                        System.out.println("The time server receive order : " + body);
-                        currentTime = "QUERY TIME ORDER".equalsIgnoreCase(body) ? new java.util.Date(
-                                System.currentTimeMillis()).toString() : "BAD ORDER";
-                        out.println(currentTime);
+                        body = body.replaceAll("\\[|\\]|\\s", ""); // 去掉空格和中括号
+                        String[] strArr = body.split(",");
+                        byte[] byteArray = new byte[strArr.length];
+                        for (int i = 0; i < strArr.length; i++) {
+                            byteArray[i] = Byte.parseByte(strArr[i].trim());
+                        }
+                        log.info("Server receive data: {}", body);
+                        out.println(Arrays.toString(byteArray));
                     }
 
                 } catch (Exception e) {
@@ -76,10 +80,11 @@ public class BioServer extends ServiceThread implements Server {
                             e1.printStackTrace();
                         }
                     }
-                }            }
+                }
+            }
         } finally {
             if (server != null) {
-                System.out.println("The time server close");
+                log.info("Server close");
                 server.close();
             }
         }

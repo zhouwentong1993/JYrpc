@@ -9,8 +9,8 @@ import org.wentong.protocal.RpcProtocol;
 import org.wentong.protocal.RpcProtocolBuilder;
 import org.wentong.serialize.DeSerializer;
 import org.wentong.serialize.Serializer;
-import org.wentong.serialize.impl.json.JSONDeserializer;
-import org.wentong.serialize.impl.json.JSONSerializer;
+import org.wentong.serialize.impl.hessian.HessianDeserializer;
+import org.wentong.serialize.impl.hessian.HessianSerializer;
 
 @Slf4j
 public class StartUp {
@@ -42,7 +42,7 @@ public class StartUp {
     }
 
     public static void main(String[] args) throws Exception {
-        StartUp startUp = new StartUp(new BioServer(), new BioClient(), new JSONSerializer<>(), new JSONDeserializer<>());
+        StartUp startUp = new StartUp(new BioServer(), new BioClient(), new HessianSerializer<>(), new HessianDeserializer<>());
         startUp.go();
         startUp.send("hello");
     }

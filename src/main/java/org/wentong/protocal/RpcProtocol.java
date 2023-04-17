@@ -3,12 +3,14 @@ package org.wentong.protocal;
 import lombok.Builder;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * RPC 协议
  */
 @Data
 @Builder
-public class RpcProtocol {
+public class RpcProtocol implements Serializable {
     // Magic Number
     private long magicNumber;
     // 消息总长度（包括消息头和消息体）
