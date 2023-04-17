@@ -12,6 +12,8 @@ import org.wentong.serialize.Serializer;
 import org.wentong.serialize.impl.hessian.HessianDeserializer;
 import org.wentong.serialize.impl.hessian.HessianSerializer;
 
+import java.util.concurrent.TimeUnit;
+
 @Slf4j
 public class StartUp {
 
@@ -44,6 +46,7 @@ public class StartUp {
     public static void main(String[] args) throws Exception {
         StartUp startUp = new StartUp(new BioServer(), new BioClient(), new HessianSerializer<>(), new HessianDeserializer<>());
         startUp.go();
+        TimeUnit.SECONDS.sleep(5);
         startUp.send("hello");
     }
 

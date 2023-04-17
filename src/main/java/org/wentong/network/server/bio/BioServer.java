@@ -5,10 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.wentong.network.server.Server;
 import org.wentong.thread.ServiceThread;
 
-import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
@@ -40,46 +40,24 @@ public class BioServer extends ServiceThread implements Server {
             Socket socket;
             while (true) {
                 socket = server.accept();
-                BufferedReader in = null;
-                PrintWriter out = null;
                 try {
-                    in = new BufferedReader(new InputStreamReader(
-                            socket.getInputStream()));
-                    out = new PrintWriter(socket.getOutputStream(), true);
-                    String body;
-                    while (true) {
-                        body = in.readLine();
-                        if (body == null) {
-                            break;
+                    InputStream inputStream = socket.getInputStream();
+                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                    byte[] buffer = new byte[4096];
+                    int len;
+                    while ((len = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, len);
+                        if (outputStream.size() > 4096) { // 设置 4KB 的输出流缓冲区大小
+                            socket.setSendBufferSize(outputStream.size());
                         }
-                        body = body.replaceAll("\\[|\\]|\\s", ""); // 去掉空格和中括号
-                        String[] strArr = body.split(",");
-                        byte[] byteArray = new byte[strArr.length];
-                        for (int i = 0; i < strArr.length; i++) {
-                            byteArray[i] = Byte.parseByte(strArr[i].trim());
-                        }
-                        log.info("Server receive data: {}", body);
-                        out.println(Arrays.toString(byteArray));
                     }
-
+                    byte[] byteArray = outputStream.toByteArray();
+                    log.info("Server receive data: {}", Arrays.toString(byteArray));
+                    OutputStream outputStream1 = socket.getOutputStream();
+                    outputStream1.write(byteArray);
+                    outputStream1.flush();
                 } catch (Exception e) {
-                    if (in != null) {
-                        try {
-                            in.close();
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
-                    }
-                    if (out != null) {
-                        out.close();
-                    }
-                    if (socket != null) {
-                        try {
-                            socket.close();
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
-                    }
+                    log.error("Server error", e);
                 }
             }
         } finally {
