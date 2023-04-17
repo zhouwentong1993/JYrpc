@@ -45,12 +45,14 @@ public class BioServer extends ServiceThread implements Server {
                     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                     byte[] buffer = new byte[4096];
                     int len;
-                    while ((len = inputStream.read(buffer)) != -1) {
-                        outputStream.write(buffer, 0, len);
-                        if (outputStream.size() > 4096) { // 设置 4KB 的输出流缓冲区大小
-                            socket.setSendBufferSize(outputStream.size());
-                        }
-                    }
+//                    while ((len = inputStream.read(buffer)) != -1) {
+//                        outputStream.write(buffer, 0, len);
+//                        if (outputStream.size() > 4096) { // 设置 4KB 的输出流缓冲区大小
+//                            socket.setSendBufferSize(outputStream.size());
+//                        }
+//                    }
+                    inputStream.read(buffer);
+                    outputStream.write(buffer);
                     byte[] byteArray = outputStream.toByteArray();
                     log.info("Server receive data: {}", Arrays.toString(byteArray));
                     OutputStream outputStream1 = socket.getOutputStream();

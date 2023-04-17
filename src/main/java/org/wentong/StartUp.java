@@ -12,15 +12,13 @@ import org.wentong.serialize.Serializer;
 import org.wentong.serialize.impl.hessian.HessianDeserializer;
 import org.wentong.serialize.impl.hessian.HessianSerializer;
 
-import java.util.concurrent.TimeUnit;
-
 @Slf4j
 public class StartUp {
 
     private final Server server;
     private final Client client;
-    private final Serializer<RpcProtocol> serializer;
-    private final DeSerializer<RpcProtocol> deSerializer;
+    private final Serializer serializer;
+    private final DeSerializer deSerializer;
     private final RpcProtocolBuilder protocolBuilder;
 
     public StartUp(Server server, Client client, Serializer<RpcProtocol> serializer, DeSerializer<RpcProtocol> deSerializer) {
@@ -36,18 +34,20 @@ public class StartUp {
         server.startServer();
     }
 
-    public void send(Object data) throws Exception {
+    public Object send(Object data) throws Exception {
 
         byte[] send = client.send(serializer.serialize(protocolBuilder.getProtocolData(data)));
-        RpcProtocol deserialize = deSerializer.deSerialize(send, RpcProtocol.class);
+        RpcProtocol deserialize = (RpcProtocol) deSerializer.deSerialize(send, RpcProtocol.class);
+        Object result = deSerializer.deSerialize(deserialize.getPayload(), Object.class);
         log.info("received data:{}", deserialize);
+        return result;
     }
 
     public static void main(String[] args) throws Exception {
         StartUp startUp = new StartUp(new BioServer(), new BioClient(), new HessianSerializer<>(), new HessianDeserializer<>());
         startUp.go();
-        TimeUnit.SECONDS.sleep(5);
-        startUp.send("hello");
+        Object send = startUp.send("hello");
+        log.info("received data:{}", send);
     }
 
 }

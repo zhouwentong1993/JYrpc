@@ -25,9 +25,11 @@ public class BioClient implements Client {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             byte[] buffer = new byte[1024];
             int length;
-            while ((length = socket.getInputStream().read(buffer)) != -1) {
-                outputStream.write(buffer, 0, length);
-            }
+//            while ((length = socket.getInputStream().read(buffer)) != -1) {
+//                outputStream.write(buffer, 0, length);
+//            }
+            socket.getInputStream().read(buffer);
+            outputStream.write(buffer);
             return outputStream.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();
