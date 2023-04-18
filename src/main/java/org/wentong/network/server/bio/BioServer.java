@@ -33,39 +33,25 @@ public class BioServer extends ServiceThread implements Server {
     @Override
     public void doService() {
         int port = 8088;
-        ServerSocket server = null;
-        try {
-            server = new ServerSocket(port);
+        try (ServerSocket server = new ServerSocket(port)) {
             log.info("Server start on port: {}", port);
-            Socket socket;
             while (true) {
-                socket = server.accept();
-                try {
-                    InputStream inputStream = socket.getInputStream();
-                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                    byte[] buffer = new byte[4096];
-                    int len;
-//                    while ((len = inputStream.read(buffer)) != -1) {
-//                        outputStream.write(buffer, 0, len);
-//                        if (outputStream.size() > 4096) { // 设置 4KB 的输出流缓冲区大小
-//                            socket.setSendBufferSize(outputStream.size());
-//                        }
-//                    }
-                    inputStream.read(buffer);
-                    outputStream.write(buffer);
-                    byte[] byteArray = outputStream.toByteArray();
-                    log.info("Server receive data: {}", Arrays.toString(byteArray));
-                    OutputStream outputStream1 = socket.getOutputStream();
-                    outputStream1.write(byteArray);
-                    outputStream1.flush();
-                } catch (Exception e) {
-                    log.error("Server error", e);
+                Socket socket = server.accept();
+                log.info("Server accept a new connection: {}", socket);
+                InputStream inputStream = socket.getInputStream();
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((len = inputStream.read(buffer)) != -1) {
+                    log.info("Server receive data length: {}", len);
+                    byteArrayOutputStream.write(buffer, 0, len);
                 }
-            }
-        } finally {
-            if (server != null) {
-                log.info("Server close");
-                server.close();
+                byte[] byteArray = byteArrayOutputStream.toByteArray();
+                log.info("Server receive data: {}", Arrays.toString(byteArray));
+                OutputStream outputStream = socket.getOutputStream();
+                outputStream.write(byteArray);
+                outputStream.flush();
+                socket.close();
             }
         }
     }
