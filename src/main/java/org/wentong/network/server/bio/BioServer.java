@@ -46,6 +46,7 @@ public class BioServer extends ServiceThread implements Server {
                 log.info("Server receive data length: {}", len);
                 byteArrayOutputStream.write(buffer, 0, len);
                 byte[] byteArray = byteArrayOutputStream.toByteArray();
+                log.info("trans data length: {}", byteArray.length);
 
                 RpcProtocolBuilder.validProtocolData(byteArray);
 
