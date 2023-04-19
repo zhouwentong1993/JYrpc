@@ -3,6 +3,7 @@ package org.wentong.network.server.bio;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.wentong.network.server.Server;
+import org.wentong.protocal.RpcProtocolBuilder;
 import org.wentong.thread.ServiceThread;
 
 import java.io.ByteArrayOutputStream;
@@ -41,12 +42,13 @@ public class BioServer extends ServiceThread implements Server {
                 InputStream inputStream = socket.getInputStream();
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 byte[] buffer = new byte[1024];
-                int len;
-                while ((len = inputStream.read(buffer)) != -1) {
-                    log.info("Server receive data length: {}", len);
-                    byteArrayOutputStream.write(buffer, 0, len);
-                }
+                int len = inputStream.read(buffer);
+                log.info("Server receive data length: {}", len);
+                byteArrayOutputStream.write(buffer, 0, len);
                 byte[] byteArray = byteArrayOutputStream.toByteArray();
+
+                RpcProtocolBuilder.validProtocolData(byteArray);
+
                 log.info("Server receive data: {}", Arrays.toString(byteArray));
                 OutputStream outputStream = socket.getOutputStream();
                 outputStream.write(byteArray);

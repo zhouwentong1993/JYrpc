@@ -13,10 +13,6 @@ import java.io.Serializable;
 public class RpcProtocol implements Serializable {
     // Magic Number
     private long magicNumber;
-    // 消息总长度（包括消息头和消息体）
-    private long totalSize;
-    // header 长度
-    private long headerSize;
     // RPC 协议版本
     private int protocolVersion;
     // 消息类型，标识这次请求的类型
@@ -25,8 +21,12 @@ public class RpcProtocol implements Serializable {
     private int serializeType;
     // 消息唯一 id
     private long messageId;
+    // header 长度
+    private long headerSize;
     // header 扩展字段
     private byte[] headerExtend;
+    // 消息总长度（包括消息头和消息体）
+    private long totalSize;
     // 消息体
     private byte[] payload;
 

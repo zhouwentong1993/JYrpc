@@ -2,13 +2,13 @@ package org.wentong.network.client.bio;
 
 import lombok.extern.slf4j.Slf4j;
 import org.wentong.network.client.Client;
+import org.wentong.protocal.RpcProtocolBuilder;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.nio.ByteBuffer;
 
 /**
  * bio client，这里用的是 per send per connect 的方式
@@ -28,14 +28,12 @@ public class BioClient implements Client {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             // 最大接收 4k 的数据
             byte[] buffer = new byte[4096];
-            int length;
             InputStream inputStream = socket.getInputStream();
-            while ((length = inputStream.read(buffer)) != -1) {
-                byteArrayOutputStream.write(buffer, 0, length);
-                ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
-
-            }
-            return byteArrayOutputStream.toByteArray();
+            int length = inputStream.read(buffer);
+            byteArrayOutputStream.write(buffer, 0, length);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            RpcProtocolBuilder.validProtocolData(byteArray);
+            return byteArray;
         } catch (IOException e) {
             e.printStackTrace();
         }
