@@ -1,4 +1,4 @@
-package org.wentong.protocal;
+package org.wentong.protocol;
 
 import cn.hutool.core.util.IdUtil;
 import lombok.NonNull;

@@ -5,8 +5,10 @@ import org.wentong.network.client.Client;
 import org.wentong.network.client.bio.BioClient;
 import org.wentong.network.server.Server;
 import org.wentong.network.server.bio.BioServer;
-import org.wentong.protocal.RpcProtocol;
-import org.wentong.protocal.RpcProtocolBuilder;
+import org.wentong.protocol.RpcProtocol;
+import org.wentong.protocol.RpcProtocolBuilder;
+import org.wentong.sample.HelloService;
+import org.wentong.sample.HelloServiceImpl;
 import org.wentong.serialize.DeSerializer;
 import org.wentong.serialize.Serializer;
 import org.wentong.serialize.impl.hessian.HessianDeserializer;
@@ -30,7 +32,7 @@ public class StartUp {
         this.protocolBuilder = protocolBuilder;
     }
 
-    public void go() throws Exception {
+    public void startServer() throws Exception {
         server.startServer();
     }
 
@@ -50,7 +52,10 @@ public class StartUp {
 
         StartUp startUp = new StartUp(new BioServer(rpcProtocolBuilder), new BioClient(rpcProtocolBuilder), serializer,
                 deSerializer, rpcProtocolBuilder);
-        startUp.go();
+        startUp.startServer();
+
+        HelloService service = new HelloServiceImpl();
+
         Object send = startUp.send("hello");
         log.info("received data:{}", send);
     }

@@ -3,7 +3,7 @@ package org.wentong.network.server.bio;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.wentong.network.server.Server;
-import org.wentong.protocal.RpcProtocolBuilder;
+import org.wentong.protocol.RpcProtocolBuilder;
 import org.wentong.thread.ServiceThread;
 
 import java.io.ByteArrayOutputStream;
@@ -54,6 +54,7 @@ public class BioServer extends ServiceThread implements Server {
                 byte[] byteArray = byteArrayOutputStream.toByteArray();
                 log.info("trans data length: {}", byteArray.length);
 
+                // bio server 实现得比较粗糙。
                 rpcProtocolBuilder.validProtocolData(byteArray);
 
                 log.info("Server receive data: {}", Arrays.toString(byteArray));

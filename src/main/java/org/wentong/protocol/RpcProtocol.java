@@ -1,4 +1,4 @@
-package org.wentong.protocal;
+package org.wentong.protocol;
 
 import lombok.Builder;
 import lombok.Data;
