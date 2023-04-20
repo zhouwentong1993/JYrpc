@@ -17,6 +17,12 @@ import java.util.Arrays;
 @Slf4j
 public class BioServer extends ServiceThread implements Server {
 
+    private final RpcProtocolBuilder rpcProtocolBuilder;
+
+    public BioServer(RpcProtocolBuilder rpcProtocolBuilder) {
+        this.rpcProtocolBuilder = rpcProtocolBuilder;
+    }
+
     @Override
     public String getServiceName() {
         return "BioServer";
@@ -48,7 +54,7 @@ public class BioServer extends ServiceThread implements Server {
                 byte[] byteArray = byteArrayOutputStream.toByteArray();
                 log.info("trans data length: {}", byteArray.length);
 
-                RpcProtocolBuilder.validProtocolData(byteArray);
+                rpcProtocolBuilder.validProtocolData(byteArray);
 
                 log.info("Server receive data: {}", Arrays.toString(byteArray));
                 OutputStream outputStream = socket.getOutputStream();

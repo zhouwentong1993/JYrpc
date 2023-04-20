@@ -21,13 +21,13 @@ public class StartUp {
     private final DeSerializer deSerializer;
     private final RpcProtocolBuilder protocolBuilder;
 
-    public StartUp(Server server, Client client, Serializer<RpcProtocol> serializer, DeSerializer<RpcProtocol> deSerializer) {
+    public StartUp(Server server, Client client, Serializer<RpcProtocol> serializer, DeSerializer<RpcProtocol> deSerializer, RpcProtocolBuilder protocolBuilder) {
         this.server = server;
         this.client = client;
 
         this.serializer = serializer;
         this.deSerializer = deSerializer;
-        protocolBuilder = new RpcProtocolBuilder(serializer);
+        this.protocolBuilder = protocolBuilder;
     }
 
     public void go() throws Exception {
@@ -44,7 +44,12 @@ public class StartUp {
     }
 
     public static void main(String[] args) throws Exception {
-        StartUp startUp = new StartUp(new BioServer(), new BioClient(), new HessianSerializer<>(), new HessianDeserializer<>());
+        HessianSerializer<RpcProtocol> serializer = new HessianSerializer<>();
+        HessianDeserializer<RpcProtocol> deSerializer = new HessianDeserializer<>();
+        RpcProtocolBuilder rpcProtocolBuilder = new RpcProtocolBuilder(serializer, deSerializer);
+
+        StartUp startUp = new StartUp(new BioServer(rpcProtocolBuilder), new BioClient(rpcProtocolBuilder), serializer,
+                deSerializer, rpcProtocolBuilder);
         startUp.go();
         Object send = startUp.send("hello");
         log.info("received data:{}", send);
