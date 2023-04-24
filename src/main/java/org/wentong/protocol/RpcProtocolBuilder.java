@@ -3,13 +3,11 @@ package org.wentong.protocol;
 import cn.hutool.core.util.IdUtil;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.wentong.constant.Constant;
 import org.wentong.message.MessageType;
 import org.wentong.serialize.DeSerializer;
 import org.wentong.serialize.SerializeException;
 import org.wentong.serialize.Serializer;
-import org.wentong.serialize.SerializerAlgo;
-
-import java.nio.charset.StandardCharsets;
 
 @Slf4j
 public class RpcProtocolBuilder {
@@ -25,13 +23,14 @@ public class RpcProtocolBuilder {
 
     public RpcProtocol getProtocolData(Object data) {
         byte[] serializedData = serializer.serialize(data);
+        byte[] headerData = serializer.serialize("{}");
         RpcProtocol build = RpcProtocol.builder()
                 .magicNumber(Long.MAX_VALUE)
                 .protocolVersion(1)
                 .messageType(MessageType.TEST_REQUEST)
-                .serializeType(SerializerAlgo.HESSIAN)
+                .serializeType(Constant.ProtocolConstant.SerialType.hessian)
                 .messageId(IdUtil.getSnowflakeNextId())
-                .headerExtend("{}".getBytes(StandardCharsets.UTF_8))
+                .headerExtend(headerData)
                 .payload(serializedData)
                 .build();
         build.setHeaderSize(build.getHeaderTotalSize());
@@ -65,5 +64,4 @@ public class RpcProtocolBuilder {
             throw new SerializeException("total size is not correct");
         }
     }
-
 }
