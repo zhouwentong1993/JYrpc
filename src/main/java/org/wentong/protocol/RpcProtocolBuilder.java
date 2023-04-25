@@ -10,16 +10,7 @@ import org.wentong.serialize.SerializeException;
 import org.wentong.serialize.Serializer;
 
 @Slf4j
-public class RpcProtocolBuilder {
-
-    private final Serializer serializer;
-
-    private final DeSerializer deSerializer;
-
-    public RpcProtocolBuilder(Serializer serializer, DeSerializer deSerializer) {
-        this.serializer = serializer;
-        this.deSerializer = deSerializer;
-    }
+public record RpcProtocolBuilder(Serializer serializer, DeSerializer deSerializer) {
 
     public RpcProtocol getProtocolData(Object data) {
         byte[] serializedData = serializer.serialize(data);
@@ -64,13 +55,5 @@ public class RpcProtocolBuilder {
             throw new SerializeException("total size is not correct");
         }
         return o;
-    }
-
-    public Serializer getSerializer() {
-        return serializer;
-    }
-
-    public DeSerializer getDeSerializer() {
-        return deSerializer;
     }
 }

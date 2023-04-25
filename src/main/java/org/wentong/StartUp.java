@@ -43,6 +43,12 @@ public class StartUp {
         return result;
     }
 
+    public void shutdown() throws Exception {
+        server.shutdown();
+    }
+
+
+
     public static void main(String[] args) throws Exception {
         HessianSerializer<RpcProtocol> serializer = new HessianSerializer<>();
         HessianDeserializer<RpcProtocol> deSerializer = new HessianDeserializer<>();

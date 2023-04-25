@@ -62,8 +62,8 @@ public class BioServer extends ServiceThread implements Server {
                 // bio server 实现得比较粗糙。
                 RpcProtocol rpcProtocol = rpcProtocolBuilder.validProtocolData(byteArray);
 
-                DeSerializer deSerializer = this.rpcProtocolBuilder.getDeSerializer();
-                Serializer serializer = this.rpcProtocolBuilder.getSerializer();
+                DeSerializer deSerializer = this.rpcProtocolBuilder.deSerializer();
+                Serializer serializer = this.rpcProtocolBuilder.serializer();
 
                 Header header = (Header) deSerializer.deSerialize(rpcProtocol.getHeaderExtend(), Header.class);
                 Object[] args = (Object[]) deSerializer.deSerialize(rpcProtocol.getPayload(), Object[].class);
