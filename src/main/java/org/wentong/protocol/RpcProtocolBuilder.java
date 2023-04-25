@@ -38,7 +38,7 @@ public class RpcProtocolBuilder {
         return build;
     }
 
-    public void validProtocolData(@NonNull byte[] data) {
+    public RpcProtocol validProtocolData(@NonNull byte[] data) {
         RpcProtocol o = (RpcProtocol) deSerializer.deSerialize(data, RpcProtocol.class);
         long magicNumber = o.getMagicNumber();
         if (magicNumber != Long.MAX_VALUE) {
@@ -63,5 +63,14 @@ public class RpcProtocolBuilder {
         if (o.getPayload().length + headerSize != totalSize) {
             throw new SerializeException("total size is not correct");
         }
+        return o;
+    }
+
+    public Serializer getSerializer() {
+        return serializer;
+    }
+
+    public DeSerializer getDeSerializer() {
+        return deSerializer;
     }
 }

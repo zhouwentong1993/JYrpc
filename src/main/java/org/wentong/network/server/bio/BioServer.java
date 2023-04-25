@@ -3,7 +3,12 @@ package org.wentong.network.server.bio;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.wentong.network.server.Server;
+import org.wentong.protocol.Header;
+import org.wentong.protocol.RpcProtocol;
 import org.wentong.protocol.RpcProtocolBuilder;
+import org.wentong.scanner.RPCServiceScanner;
+import org.wentong.serialize.DeSerializer;
+import org.wentong.serialize.Serializer;
 import org.wentong.thread.ServiceThread;
 
 import java.io.ByteArrayOutputStream;
@@ -12,7 +17,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Arrays;
+import java.util.Objects;
 
 @Slf4j
 public class BioServer extends ServiceThread implements Server {
@@ -55,11 +60,21 @@ public class BioServer extends ServiceThread implements Server {
                 log.info("trans data length: {}", byteArray.length);
 
                 // bio server 实现得比较粗糙。
-                rpcProtocolBuilder.validProtocolData(byteArray);
+                RpcProtocol rpcProtocol = rpcProtocolBuilder.validProtocolData(byteArray);
 
-                log.info("Server receive data: {}", Arrays.toString(byteArray));
+                DeSerializer deSerializer = this.rpcProtocolBuilder.getDeSerializer();
+                Serializer serializer = this.rpcProtocolBuilder.getSerializer();
+
+                Header header = (Header) deSerializer.deSerialize(rpcProtocol.getHeaderExtend(), Header.class);
+                Object[] args = (Object[]) deSerializer.deSerialize(rpcProtocol.getPayload(), Object[].class);
+                String className = header.getClassName();
+                log.info("Server receive request, class:{}, method:{}", className, header.getMethodName());
+                Object service = RPCServiceScanner.getService(className);
+                Objects.requireNonNull(service);
+                Object result = service.getClass().getMethod(header.getMethodName(), header.getParameterTypes()).invoke(service, args);
+                log.info("Server receive data: {}", result);
                 OutputStream outputStream = socket.getOutputStream();
-                outputStream.write(byteArray);
+                outputStream.write(serializer.serialize(rpcProtocolBuilder.getProtocolData(result)));
                 outputStream.flush();
                 socket.close();
             }

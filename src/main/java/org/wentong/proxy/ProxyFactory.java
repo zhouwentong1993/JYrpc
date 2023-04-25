@@ -42,7 +42,7 @@ public class ProxyFactory {
         builder.messageId(IdUtil.getSnowflakeNextId());
         builder.messageType(Constant.ProtocolConstant.MessageType.invoke);
         builder.serializeType(hessianSerializer);
-        builder.headerExtend(serializer.serialize(new Header(clazz.getName(), method.getName())));
+        builder.headerExtend(serializer.serialize(new Header(clazz.getName(), method.getName(), method.getParameterTypes())));
         builder.payload(serializer.serialize(args));
         RpcProtocol build = builder.build();
         build.setHeaderSize(build.getHeaderTotalSize());
