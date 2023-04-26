@@ -31,7 +31,13 @@ public abstract class ServiceThread implements Runnable {
     @Override
     public final void run() {
         try {
-            doService();
+            while (!stopped) {
+                try {
+                    doService();
+                } catch (Exception e) {
+                    log.error("", e);
+                }
+            }
         } catch (Exception e) {
             log.error("", e);
         }
