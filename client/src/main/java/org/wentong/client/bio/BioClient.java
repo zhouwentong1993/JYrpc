@@ -1,7 +1,7 @@
-package org.wentong.network.client.bio;
+package org.wentong.client.bio;
 
 import lombok.extern.slf4j.Slf4j;
-import org.wentong.network.client.Client;
+import org.wentong.client.Client;
 import org.wentong.protocol.RpcProtocolBuilder;
 
 import java.io.ByteArrayOutputStream;

@@ -1,4 +1,4 @@
-package org.wentong.network.client;
+package org.wentong.client;
 
 /**
  * 客户端接口

@@ -1,4 +1,4 @@
-package org.wentong.client;
+package org.wentong.client.invoker;
 
 public interface SendCallback {
 
