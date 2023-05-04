@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.wentong.client.Client;
 import org.wentong.client.bio.BioClient;
 import org.wentong.network.server.Server;
-import org.wentong.network.server.bio.BioServer;
+import org.wentong.network.server.netty.NettyServer;
 import org.wentong.protocol.RpcProtocol;
 import org.wentong.protocol.RpcProtocolBuilder;
 import org.wentong.protocol.serialize.DeSerializer;
@@ -54,7 +54,7 @@ public class StartUp {
         HessianDeserializer<RpcProtocol> deSerializer = new HessianDeserializer<>();
         RpcProtocolBuilder rpcProtocolBuilder = new RpcProtocolBuilder(serializer, deSerializer);
 
-        StartUp startUp = new StartUp(new BioServer(rpcProtocolBuilder), new BioClient(rpcProtocolBuilder), serializer,
+        StartUp startUp = new StartUp(new NettyServer(rpcProtocolBuilder), new BioClient(rpcProtocolBuilder), serializer,
                 deSerializer, rpcProtocolBuilder);
         startUp.startServer();
 
