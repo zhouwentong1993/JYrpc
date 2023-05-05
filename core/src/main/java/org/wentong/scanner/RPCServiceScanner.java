@@ -12,7 +12,7 @@ import java.util.Set;
 @Slf4j
 public class RPCServiceScanner {
 
-    private static Map<String, Object> serviceMap = new HashMap<>();
+    private static final Map<String, Object> serviceMap = new HashMap<>();
 
     static {
         String packageName = "org.wentong";
