@@ -8,6 +8,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.concurrent.DefaultEventExecutorGroup;
+import io.netty.util.concurrent.EventExecutorGroup;
 import lombok.extern.slf4j.Slf4j;
 import org.wentong.network.server.Server;
 import org.wentong.protocol.RpcProtocolBuilder;
@@ -23,6 +25,7 @@ public class NettyServer extends ServiceThread implements Server {
 
     EventLoopGroup bossGroup = null;
     EventLoopGroup workerGroup = null;
+    EventExecutorGroup businessGroup = null;
 
     private final RpcProtocolBuilder rpcProtocolBuilder;
 
@@ -46,6 +49,9 @@ public class NettyServer extends ServiceThread implements Server {
         log.info("NettyServer start at 8088");
         this.bossGroup = new NioEventLoopGroup();
         this.workerGroup = new NioEventLoopGroup(8);
+        businessGroup = new DefaultEventExecutorGroup(2); // 业务线程池
+
+
         try {
             ServerBootstrap serverBootstrap = new ServerBootstrap();
             serverBootstrap.group(bossGroup, workerGroup)
@@ -54,7 +60,7 @@ public class NettyServer extends ServiceThread implements Server {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             // 注册自己的处理器
-                            socketChannel.pipeline().addLast(new NettyServerHandler(rpcProtocolBuilder));
+                            socketChannel.pipeline().addLast(businessGroup, new NettyServerHandler(rpcProtocolBuilder));
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)

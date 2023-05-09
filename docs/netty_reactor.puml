@@ -1,0 +1,36 @@
+@startuml
+'https://plantuml.com/object-diagram
+
+object client
+object Acceptor
+object Main_Reactor_Thread_Pool
+object Sub_Reactor_Thread_Pool
+object NIO_Thread
+object NewYork
+object auth
+object login
+object ShakeHand
+object SLA
+object Handler
+
+client --> Acceptor
+client --> Acceptor
+client --> Acceptor
+
+Acceptor --> Main_Reactor_Thread_Pool:Dispatcher
+Main_Reactor_Thread_Pool --> auth:read/decode
+Main_Reactor_Thread_Pool --> login:read/decode
+Main_Reactor_Thread_Pool --> ShakeHand:read/decode
+Main_Reactor_Thread_Pool --> SLA:read/decode
+
+auth --> NIO_Thread:Dispatcher
+login --> NIO_Thread:Dispatcher
+ShakeHand --> NIO_Thread:Dispatcher
+SLA --> NIO_Thread:Dispatcher
+
+NIO_Thread --> Sub_Reactor_Thread_Pool
+NIO_Thread --> Handler:read/decode/business
+
+
+
+@enduml
