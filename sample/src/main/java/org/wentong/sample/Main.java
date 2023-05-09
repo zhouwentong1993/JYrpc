@@ -1,6 +1,6 @@
 package org.wentong.sample;
 
-import org.wentong.client.bio.BioClient;
+import org.wentong.client.network.bio.BioClient;
 import org.wentong.client.proxy.ProxyFactory;
 import org.wentong.network.server.netty.NettyServer;
 import org.wentong.protocol.RpcProtocol;

@@ -2,7 +2,7 @@ package org.wentong.sample;
 
 import lombok.extern.slf4j.Slf4j;
 import org.wentong.client.Client;
-import org.wentong.client.bio.BioClient;
+import org.wentong.client.network.bio.BioClient;
 import org.wentong.network.server.Server;
 import org.wentong.network.server.netty.NettyServer;
 import org.wentong.protocol.RpcProtocol;
