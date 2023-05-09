@@ -1,7 +1,6 @@
 package org.wentong.sample;
 
 import lombok.extern.slf4j.Slf4j;
-import org.wentong.client.network.netty.NettyClient;
 import org.wentong.client.proxy.ProxyFactory;
 import org.wentong.network.server.netty.NettyServer;
 import org.wentong.protocol.RpcProtocol;
@@ -19,7 +18,7 @@ public class Main {
         HessianDeserializer<RpcProtocol> deSerializer = new HessianDeserializer<>();
         RpcProtocolBuilder rpcProtocolBuilder = new RpcProtocolBuilder(serializer, deSerializer);
 
-        StartUp startUp = new StartUp(new NettyServer(rpcProtocolBuilder), new NettyClient(rpcProtocolBuilder), serializer,
+        StartUp startUp = new StartUp(new NettyServer(rpcProtocolBuilder), serializer,
                 deSerializer, rpcProtocolBuilder);
         startUp.startServer();
 
