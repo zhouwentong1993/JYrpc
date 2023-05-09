@@ -5,8 +5,11 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
+import org.wentong.protocol.RpcProtocol;
 import org.wentong.protocol.RpcProtocolBuilder;
 
+@Slf4j
 public class NettyClientHandler extends ChannelInboundHandlerAdapter {
 
     @NonNull
@@ -21,7 +24,9 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        super.channelRead(ctx, msg);
+        RpcProtocol rpcProtocol = (RpcProtocol) msg;
+        Object result = rpcProtocolBuilder.deSerializer().deSerialize(rpcProtocol.getPayload(), Object.class);
+        log.info("响应结果{}", result);
     }
 
     @Override

@@ -13,6 +13,8 @@ import io.netty.util.concurrent.EventExecutorGroup;
 import lombok.extern.slf4j.Slf4j;
 import org.wentong.network.server.Server;
 import org.wentong.protocol.RpcProtocolBuilder;
+import org.wentong.protocol.netty.NettyHessianDecoder;
+import org.wentong.protocol.netty.NettyHessianEncoder;
 import org.wentong.thread.ServiceThread;
 
 import java.util.Objects;
@@ -60,6 +62,8 @@ public class NettyServer extends ServiceThread implements Server {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             // 注册自己的处理器
+                            socketChannel.pipeline().addLast("decoder", new NettyHessianDecoder());
+                            socketChannel.pipeline().addLast("encoder", new NettyHessianEncoder());
                             socketChannel.pipeline().addLast(businessGroup, new NettyServerHandler(rpcProtocolBuilder));
                         }
                     })

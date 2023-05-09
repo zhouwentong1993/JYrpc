@@ -24,5 +24,13 @@ public class Parser {
         String className = header.getClassName();
         return new Invokee(className, header.getMethodName(), header.getParameterTypes(), args);
     }
+    public Invokee parse(@NonNull RpcProtocol rpcProtocol) {
+        DeSerializer deSerializer = rpcProtocolBuilder.deSerializer();
+
+        Header header = (Header) deSerializer.deSerialize(rpcProtocol.getHeaderExtend(), Header.class);
+        Object[] args = (Object[]) deSerializer.deSerialize(rpcProtocol.getPayload(), Object[].class);
+        String className = header.getClassName();
+        return new Invokee(className, header.getMethodName(), header.getParameterTypes(), args);
+    }
 
 }

@@ -1,7 +1,5 @@
 package org.wentong.network.server.netty;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -20,9 +18,9 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ByteBuf byteBuf = (ByteBuf)msg;
-        byte[] bytes = ByteBufUtil.getBytes(byteBuf);
-        Object result = new Invoker().invoke(new Parser(rpcProtocolBuilder).parse(bytes));
+        System.out.println(msg);
+        RpcProtocol rpcProtocol = (RpcProtocol) msg;
+        Object result = new Invoker().invoke(new Parser(rpcProtocolBuilder).parse(rpcProtocol));
         RpcProtocol protocolData = rpcProtocolBuilder.getProtocolData(result);
         ChannelFuture channelFuture = ctx.writeAndFlush(protocolData);
         channelFuture.addListener(future -> {

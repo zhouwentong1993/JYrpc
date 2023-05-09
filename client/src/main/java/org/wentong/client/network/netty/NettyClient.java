@@ -11,6 +11,8 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import org.wentong.client.Client;
 import org.wentong.protocol.RpcProtocol;
 import org.wentong.protocol.RpcProtocolBuilder;
+import org.wentong.protocol.netty.NettyHessianDecoder;
+import org.wentong.protocol.netty.NettyHessianEncoder;
 
 // Netty 实现的 client
 public class NettyClient implements Client {
@@ -60,6 +62,8 @@ public class NettyClient implements Client {
             b.handler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 public void initChannel(SocketChannel ch) {
+                    ch.pipeline().addLast("decoder", new NettyHessianDecoder());
+                    ch.pipeline().addLast("encoder", new NettyHessianEncoder());
                     ch.pipeline().addLast(new NettyClientHandler(data, protocolBuilder));
                 }
             });

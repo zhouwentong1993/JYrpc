@@ -3,7 +3,7 @@ package org.wentong.client.proxy;
 import cn.hutool.core.util.IdUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.wentong.client.Client;
-import org.wentong.client.network.bio.BioClient;
+import org.wentong.client.network.netty.NettyClient;
 import org.wentong.constant.Constant;
 import org.wentong.protocol.Header;
 import org.wentong.protocol.RpcProtocol;
@@ -26,7 +26,7 @@ public class ProxyFactory {
             Serializer serializer = SerializeFactory.getSerializer(Constant.ProtocolConstant.SerialType.hessian);
             DeSerializer deSerializer = SerializeFactory.getDeSerializer(Constant.ProtocolConstant.SerialType.hessian);
             RpcProtocol protocolData = getProtocolData(method, args, clazz, serializer);
-            Client client = new BioClient(new RpcProtocolBuilder(serializer, deSerializer));
+            Client client = new NettyClient(new RpcProtocolBuilder(serializer, deSerializer));
             RpcProtocol result = client.send(protocolData);
             return (T) (deSerializer.deSerialize(result.getPayload(), Object.class));
         });
