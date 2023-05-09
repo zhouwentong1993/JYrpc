@@ -2,6 +2,7 @@ package org.wentong.network.server.netty;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.wentong.dispatcher.Invoker;
@@ -23,7 +24,14 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         byte[] bytes = ByteBufUtil.getBytes(byteBuf);
         Object result = new Invoker().invoke(new Parser(rpcProtocolBuilder).parse(bytes));
         RpcProtocol protocolData = rpcProtocolBuilder.getProtocolData(result);
-        ctx.writeAndFlush(protocolData);
+        ChannelFuture channelFuture = ctx.writeAndFlush(protocolData);
+        channelFuture.addListener(future -> {
+            if (future.isSuccess()) {
+                System.out.println("服务端发送消息成功");
+            } else {
+                System.out.println("服务端发送消息失败");
+            }
+        });
 
     }
 

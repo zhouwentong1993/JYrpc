@@ -2,6 +2,7 @@ package org.wentong.client.network.bio;
 
 import lombok.extern.slf4j.Slf4j;
 import org.wentong.client.Client;
+import org.wentong.protocol.RpcProtocol;
 import org.wentong.protocol.RpcProtocolBuilder;
 
 import java.io.ByteArrayOutputStream;
@@ -9,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Objects;
 
 /**
  * bio client，这里用的是 per send per connect 的方式
@@ -44,6 +46,14 @@ public class BioClient implements Client {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public RpcProtocol send(RpcProtocol data) throws Exception {
+        byte[] serialize = protocolBuilder.serializer().serialize(data);
+        byte[] send = send(serialize);
+        Objects.requireNonNull(send);
+        return (RpcProtocol) protocolBuilder.deSerializer().deSerialize(send, RpcProtocol.class);
     }
 
 

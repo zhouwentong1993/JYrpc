@@ -1,5 +1,7 @@
 package org.wentong.client.network.netty;
 
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.NonNull;
@@ -8,11 +10,11 @@ import org.wentong.protocol.RpcProtocolBuilder;
 public class NettyClientHandler extends ChannelInboundHandlerAdapter {
 
     @NonNull
-    private final byte[] data;
+    private final Object data;
     @NonNull
     private final RpcProtocolBuilder rpcProtocolBuilder;
 
-    public NettyClientHandler(@NonNull byte[] data, @NonNull RpcProtocolBuilder rpcProtocolBuilder) {
+    public NettyClientHandler(@NonNull Object data, @NonNull RpcProtocolBuilder rpcProtocolBuilder) {
         this.data = data;
         this.rpcProtocolBuilder = rpcProtocolBuilder;
     }
@@ -24,6 +26,9 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        ctx.writeAndFlush(data);
+        ChannelFuture channelFuture = ctx.writeAndFlush(data);
+        channelFuture.addListener((ChannelFutureListener) channelFuture1 -> System.out.println("发送数据成功"));
     }
+
+
 }

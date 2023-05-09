@@ -27,9 +27,8 @@ public class ProxyFactory {
             DeSerializer deSerializer = SerializeFactory.getDeSerializer(Constant.ProtocolConstant.SerialType.hessian);
             RpcProtocol protocolData = getProtocolData(method, args, clazz, serializer);
             Client client = new NettyClient(new RpcProtocolBuilder(serializer, deSerializer));
-            byte[] send = client.send(serializer.serialize(protocolData));
-            RpcProtocol rpcProtocol = (RpcProtocol) deSerializer.deSerialize(send, RpcProtocol.class);
-            return (T) (deSerializer.deSerialize(rpcProtocol.getPayload(), Object.class));
+            RpcProtocol result = client.send(protocolData);
+            return (T) (deSerializer.deSerialize(result.getPayload(), Object.class));
         });
     }
 
