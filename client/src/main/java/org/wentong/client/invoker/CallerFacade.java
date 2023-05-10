@@ -1,7 +1,7 @@
 package org.wentong.client.invoker;
 
 import org.wentong.client.network.Client;
-import org.wentong.protocol.RpcProtocol;
+import org.wentong.protocol.RpcCommand;
 import org.wentong.protocol.RpcProtocolBuilder;
 
 public class CallerFacade<I, R> {
@@ -15,9 +15,9 @@ public class CallerFacade<I, R> {
     }
 
     public R call(I i) throws Exception{
-        RpcProtocol protocolData = rpcProtocolBuilder.getProtocolData(i);
+        RpcCommand protocolData = rpcProtocolBuilder.getProtocolData(i);
         byte[] send = client.send(rpcProtocolBuilder.serializer().serialize(protocolData));
-        RpcProtocol response = (RpcProtocol) rpcProtocolBuilder.deSerializer().deSerialize(send, RpcProtocol.class);
+        RpcCommand response = (RpcCommand) rpcProtocolBuilder.deSerializer().deSerialize(send, RpcCommand.class);
         return (R) rpcProtocolBuilder.deSerializer().deSerialize(response.getPayload(), Object.class);
     }
 

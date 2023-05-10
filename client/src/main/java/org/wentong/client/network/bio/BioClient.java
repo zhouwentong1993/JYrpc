@@ -2,7 +2,7 @@ package org.wentong.client.network.bio;
 
 import lombok.extern.slf4j.Slf4j;
 import org.wentong.client.network.Client;
-import org.wentong.protocol.RpcProtocol;
+import org.wentong.protocol.RpcCommand;
 import org.wentong.protocol.RpcProtocolBuilder;
 
 import java.io.ByteArrayOutputStream;
@@ -49,11 +49,11 @@ public class BioClient implements Client {
     }
 
     @Override
-    public RpcProtocol send(RpcProtocol data) throws Exception {
+    public RpcCommand send(RpcCommand data) throws Exception {
         byte[] serialize = protocolBuilder.serializer().serialize(data);
         byte[] send = send(serialize);
         Objects.requireNonNull(send);
-        return (RpcProtocol) protocolBuilder.deSerializer().deSerialize(send, RpcProtocol.class);
+        return (RpcCommand) protocolBuilder.deSerializer().deSerialize(send, RpcCommand.class);
     }
 
 

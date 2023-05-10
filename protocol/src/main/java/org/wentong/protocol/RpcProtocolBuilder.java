@@ -12,10 +12,10 @@ import org.wentong.protocol.serialize.Serializer;
 @Slf4j
 public record RpcProtocolBuilder(Serializer serializer, DeSerializer deSerializer) {
 
-    public RpcProtocol getProtocolData(Object data) {
+    public RpcCommand getProtocolData(Object data) {
         byte[] serializedData = serializer.serialize(data);
         byte[] headerData = serializer.serialize("{}");
-        RpcProtocol build = RpcProtocol.builder()
+        RpcCommand build = RpcCommand.builder()
                 .magicNumber(Long.MAX_VALUE)
                 .protocolVersion(1)
                 .messageType(MessageType.TEST_REQUEST)
@@ -29,8 +29,8 @@ public record RpcProtocolBuilder(Serializer serializer, DeSerializer deSerialize
         return build;
     }
 
-    public RpcProtocol validProtocolData(@NonNull byte[] data) {
-        RpcProtocol o = (RpcProtocol) deSerializer.deSerialize(data, RpcProtocol.class);
+    public RpcCommand validProtocolData(@NonNull byte[] data) {
+        RpcCommand o = (RpcCommand) deSerializer.deSerialize(data, RpcCommand.class);
         long magicNumber = o.getMagicNumber();
         if (magicNumber != Long.MAX_VALUE) {
             throw new SerializeException("magic number is not correct");

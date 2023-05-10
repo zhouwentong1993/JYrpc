@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 @Data
 @Builder
-public class RpcProtocol implements Serializable {
+public class RpcCommand implements Serializable {
     // Magic Number
     private long magicNumber;
     // RPC 协议版本

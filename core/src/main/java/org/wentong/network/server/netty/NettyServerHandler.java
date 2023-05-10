@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import org.wentong.dispatcher.Invoker;
 import org.wentong.dispatcher.Parser;
-import org.wentong.protocol.RpcProtocol;
+import org.wentong.protocol.RpcCommand;
 import org.wentong.protocol.RpcProtocolBuilder;
 
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
@@ -19,9 +19,9 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         System.out.println(msg);
-        RpcProtocol rpcProtocol = (RpcProtocol) msg;
-        Object result = new Invoker().invoke(new Parser(rpcProtocolBuilder).parse(rpcProtocol));
-        RpcProtocol protocolData = rpcProtocolBuilder.getProtocolData(result);
+        RpcCommand rpcCommand = (RpcCommand) msg;
+        Object result = new Invoker().invoke(new Parser(rpcProtocolBuilder).parse(rpcCommand));
+        RpcCommand protocolData = rpcProtocolBuilder.getProtocolData(result);
         ChannelFuture channelFuture = ctx.writeAndFlush(protocolData);
         channelFuture.addListener(future -> {
             if (future.isSuccess()) {

@@ -6,7 +6,7 @@ import org.wentong.client.network.Client;
 import org.wentong.client.network.netty.NettyClient;
 import org.wentong.constant.Constant;
 import org.wentong.protocol.Header;
-import org.wentong.protocol.RpcProtocol;
+import org.wentong.protocol.RpcCommand;
 import org.wentong.protocol.RpcProtocolBuilder;
 import org.wentong.protocol.serialize.DeSerializer;
 import org.wentong.protocol.serialize.SerializeFactory;
@@ -25,17 +25,17 @@ public class ProxyFactory {
         return (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, (proxy, method, args) -> {
             Serializer serializer = SerializeFactory.getSerializer(Constant.ProtocolConstant.SerialType.hessian);
             DeSerializer deSerializer = SerializeFactory.getDeSerializer(Constant.ProtocolConstant.SerialType.hessian);
-            RpcProtocol protocolData = getProtocolData(method, args, clazz, serializer);
+            RpcCommand protocolData = getProtocolData(method, args, clazz, serializer);
             Client client = new NettyClient(new RpcProtocolBuilder(serializer, deSerializer));
-            RpcProtocol result = client.send(protocolData);
+            RpcCommand result = client.send(protocolData);
             return (T) (deSerializer.deSerialize(result.getPayload(), Object.class));
         });
     }
 
-    private static <T> RpcProtocol getProtocolData(Method method, Object[] args, Class<T> clazz, Serializer serializer) {
+    private static <T> RpcCommand getProtocolData(Method method, Object[] args, Class<T> clazz, Serializer serializer) {
         int hessianSerializer = Constant.ProtocolConstant.SerialType.hessian;
         log.info("proxy invoke on method: {}", method.getName());
-        RpcProtocol.RpcProtocolBuilder builder = RpcProtocol.builder();
+        RpcCommand.RpcCommandBuilder builder = RpcCommand.builder();
         builder.magicNumber(Constant.ProtocolConstant.magicNumber);
         builder.protocolVersion(Constant.ProtocolConstant.protocolVersion);
         builder.messageId(IdUtil.getSnowflakeNextId());
@@ -43,7 +43,7 @@ public class ProxyFactory {
         builder.serializeType(hessianSerializer);
         builder.headerExtend(serializer.serialize(new Header(clazz.getName(), method.getName(), method.getParameterTypes())));
         builder.payload(serializer.serialize(args));
-        RpcProtocol build = builder.build();
+        RpcCommand build = builder.build();
         build.setHeaderSize(build.getHeaderTotalSize());
         build.setTotalSize(build.getHeaderSize() + build.getPayload().length);
         return build;

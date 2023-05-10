@@ -3,7 +3,7 @@ package org.wentong.sample;
 import lombok.extern.slf4j.Slf4j;
 import org.wentong.network.server.Server;
 import org.wentong.network.server.netty.NettyServer;
-import org.wentong.protocol.RpcProtocol;
+import org.wentong.protocol.RpcCommand;
 import org.wentong.protocol.RpcProtocolBuilder;
 import org.wentong.protocol.serialize.DeSerializer;
 import org.wentong.protocol.serialize.Serializer;
@@ -18,7 +18,7 @@ public class StartUp {
     private final DeSerializer deSerializer;
     private final RpcProtocolBuilder protocolBuilder;
 
-    public StartUp(Server server, Serializer<RpcProtocol> serializer, DeSerializer<RpcProtocol> deSerializer, RpcProtocolBuilder protocolBuilder) {
+    public StartUp(Server server, Serializer<RpcCommand> serializer, DeSerializer<RpcCommand> deSerializer, RpcProtocolBuilder protocolBuilder) {
         this.server = server;
 
         this.serializer = serializer;
@@ -36,8 +36,8 @@ public class StartUp {
 
 
     public static void main(String[] args) throws Exception {
-        HessianSerializer<RpcProtocol> serializer = new HessianSerializer<>();
-        HessianDeserializer<RpcProtocol> deSerializer = new HessianDeserializer<>();
+        HessianSerializer<RpcCommand> serializer = new HessianSerializer<>();
+        HessianDeserializer<RpcCommand> deSerializer = new HessianDeserializer<>();
         RpcProtocolBuilder rpcProtocolBuilder = new RpcProtocolBuilder(serializer, deSerializer);
 
         StartUp startUp = new StartUp(new NettyServer(rpcProtocolBuilder), serializer,

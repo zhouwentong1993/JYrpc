@@ -1,6 +1,6 @@
 package org.wentong.client.network;
 
-import org.wentong.protocol.RpcProtocol;
+import org.wentong.protocol.RpcCommand;
 
 /**
  * 客户端接口
@@ -12,6 +12,6 @@ public interface Client {
      */
     byte[] send(byte[] data) throws Exception;
 
-    RpcProtocol send(RpcProtocol data) throws Exception;
+    RpcCommand send(RpcCommand data) throws Exception;
 
 }
