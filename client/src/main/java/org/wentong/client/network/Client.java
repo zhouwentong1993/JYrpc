@@ -1,4 +1,4 @@
-package org.wentong.client;
+package org.wentong.client.network;
 
 import org.wentong.protocol.RpcProtocol;
 

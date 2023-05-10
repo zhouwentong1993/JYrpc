@@ -2,7 +2,7 @@ package org.wentong.client.proxy;
 
 import cn.hutool.core.util.IdUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.wentong.client.Client;
+import org.wentong.client.network.Client;
 import org.wentong.client.network.netty.NettyClient;
 import org.wentong.constant.Constant;
 import org.wentong.protocol.Header;
