@@ -23,7 +23,7 @@ public class NettyClient {
         inFlightRequests = new InFlightRequests();
 
         EventLoopGroup workerGroup = new NioEventLoopGroup();
-        try {
+//        try {
             Bootstrap b = new Bootstrap();
             b.group(workerGroup);
             b.channel(NioSocketChannel.class);
@@ -41,10 +41,13 @@ public class NettyClient {
             ChannelFuture f = b.connect(uri.getHost(), uri.getPort()).sync();
             channel = f.channel();
 
+            if (channel == null || !channel.isActive()) {
+                throw new IllegalStateException();
+            }
             // Wait until the connection is closed.
-            f.channel().closeFuture().sync();
-        } finally {
-            workerGroup.shutdownGracefully();
-        }
+//            f.channel().closeFuture().sync();
+//        } finally {
+//            workerGroup.shutdownGracefully();
+//        }
     }
 }

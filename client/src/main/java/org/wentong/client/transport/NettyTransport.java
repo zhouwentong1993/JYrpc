@@ -20,13 +20,17 @@ public class NettyTransport implements Transport {
 
     @Override
     public CompletableFuture<RpcCommand> send(RpcCommand request) {
+        CompletableFuture<RpcCommand> completableFuture = new CompletableFuture<>();
+
         ChannelFuture channelFuture = channel.writeAndFlush(request);
-        CompletableFuture<RpcCommand> future = new CompletableFuture<>();
-        if (channelFuture.isSuccess()) {
-            inFlightRequests.put(request.getMessageId(), new ResponseFuture(future));
-        } else {
-            return CompletableFuture.failedFuture(channelFuture.cause());
-        }
-        return future;
+        channelFuture.addListener(future -> {
+            if (!channelFuture.isSuccess()) {
+                completableFuture.completeExceptionally(channelFuture.cause());
+                channel.close();
+            } else {
+                inFlightRequests.put(request.getMessageId(), new ResponseFuture(completableFuture));
+            }
+        });
+        return completableFuture;
     }
 }

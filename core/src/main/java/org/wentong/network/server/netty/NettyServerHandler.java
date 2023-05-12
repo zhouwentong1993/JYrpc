@@ -22,6 +22,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         RpcCommand rpcCommand = (RpcCommand) msg;
         Object result = new Invoker().invoke(new Parser(rpcProtocolBuilder).parse(rpcCommand));
         RpcCommand protocolData = rpcProtocolBuilder.getProtocolData(result);
+        protocolData.setMessageId(rpcCommand.getMessageId());
         ChannelFuture channelFuture = ctx.writeAndFlush(protocolData);
         channelFuture.addListener(future -> {
             if (future.isSuccess()) {
