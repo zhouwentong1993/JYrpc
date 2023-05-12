@@ -25,4 +25,10 @@ public class NettyClientResponseHandler extends ChannelInboundHandlerAdapter {
             future.getFuture().complete(command);
         }
     }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        cause.printStackTrace();
+        super.exceptionCaught(ctx, cause);
+    }
 }

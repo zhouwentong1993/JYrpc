@@ -2,12 +2,13 @@ package org.wentong.client.proxy;
 
 import cn.hutool.core.util.IdUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.wentong.client.network.Client;
-import org.wentong.client.network.netty.NettyClient;
+import org.wentong.client.nameserver.MemoryNameServer;
+import org.wentong.client.nameserver.NameServer;
+import org.wentong.client.transport.NettyTransportFactory;
+import org.wentong.client.transport.Transport;
 import org.wentong.constant.Constant;
 import org.wentong.protocol.Header;
 import org.wentong.protocol.RpcCommand;
-import org.wentong.protocol.RpcProtocolBuilder;
 import org.wentong.protocol.serialize.DeSerializer;
 import org.wentong.protocol.serialize.SerializeFactory;
 import org.wentong.protocol.serialize.Serializer;
@@ -26,9 +27,10 @@ public class ProxyFactory {
             Serializer serializer = SerializeFactory.getSerializer(Constant.ProtocolConstant.SerialType.hessian);
             DeSerializer deSerializer = SerializeFactory.getDeSerializer(Constant.ProtocolConstant.SerialType.hessian);
             RpcCommand protocolData = getProtocolData(method, args, clazz, serializer);
-            Client client = new NettyClient(new RpcProtocolBuilder(serializer, deSerializer));
-            RpcCommand result = client.send(protocolData);
-            return (T) (deSerializer.deSerialize(result.getPayload(), Object.class));
+            NameServer nameServer = new MemoryNameServer();
+            Transport transport = NettyTransportFactory.create(nameServer.lookupService("org.wentong.sample.HelloService").get(0));
+            RpcCommand response = transport.send(protocolData).get();
+            return deSerializer.deSerialize(response.getPayload(), Object.class);
         });
     }
 
