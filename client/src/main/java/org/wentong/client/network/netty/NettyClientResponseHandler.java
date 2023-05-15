@@ -22,7 +22,6 @@ public class NettyClientResponseHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         RpcCommand command = (RpcCommand) msg;
         log.info("Client receive response: [{}]", command);
-
         Objects.requireNonNull(command);
         ResponseFuture future = inFlightRequests.remove(command.getMessageId());
         if (future != null) {
