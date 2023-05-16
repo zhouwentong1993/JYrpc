@@ -1,7 +1,9 @@
 package org.wentong.client.proxy;
 
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.IdUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.wentong.client.callback.Callback;
 import org.wentong.client.nameserver.MemoryNameServer;
 import org.wentong.client.nameserver.NameServer;
 import org.wentong.client.router.OneToOneRouter;
@@ -32,8 +34,20 @@ public class ProxyFactory {
             Router router = new OneToOneRouter();
             Transport transport = router.selectOne(nameServer.lookupService("org.wentong.sample.HelloService").get(0));
             RpcCommand response = transport.send(protocolData).get();
+            if (methodHasParam(method, Callback.class)) {
+                Callback callback = (Callback) args[args.length - 1];
+                callback.notify(deSerializer.deSerialize(response.getPayload(), Object.class));
+                return null;
+            }
             return deSerializer.deSerialize(response.getPayload(), Object.class);
         });
+    }
+
+    private static boolean methodHasParam(Method method, Class clazz) {
+        // 获取目标方法的参数类型列表
+        Class<?>[] parameterTypes = method.getParameterTypes();
+        // 判断参数类型列表中是否包含指定类型
+        return ArrayUtil.contains(parameterTypes, clazz);
     }
 
     private static <T> RpcCommand getProtocolData(Method method, Object[] args, Class<T> clazz, Serializer serializer) {

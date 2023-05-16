@@ -5,8 +5,6 @@ import org.wentong.network.server.Server;
 import org.wentong.network.server.netty.NettyServer;
 import org.wentong.protocol.RpcCommand;
 import org.wentong.protocol.RpcProtocolBuilder;
-import org.wentong.protocol.serialize.DeSerializer;
-import org.wentong.protocol.serialize.Serializer;
 import org.wentong.protocol.serialize.impl.hessian.HessianDeserializer;
 import org.wentong.protocol.serialize.impl.hessian.HessianSerializer;
 
@@ -14,16 +12,10 @@ import org.wentong.protocol.serialize.impl.hessian.HessianSerializer;
 public class StartUp {
 
     private final Server server;
-    private final Serializer serializer;
-    private final DeSerializer deSerializer;
-    private final RpcProtocolBuilder protocolBuilder;
 
-    public StartUp(Server server, Serializer<RpcCommand> serializer, DeSerializer<RpcCommand> deSerializer, RpcProtocolBuilder protocolBuilder) {
+    public StartUp(Server server) {
         this.server = server;
 
-        this.serializer = serializer;
-        this.deSerializer = deSerializer;
-        this.protocolBuilder = protocolBuilder;
     }
 
     public void startServer() throws Exception {
@@ -40,8 +32,8 @@ public class StartUp {
         HessianDeserializer<RpcCommand> deSerializer = new HessianDeserializer<>();
         RpcProtocolBuilder rpcProtocolBuilder = new RpcProtocolBuilder(serializer, deSerializer);
 
-        StartUp startUp = new StartUp(new NettyServer(rpcProtocolBuilder), serializer,
-                deSerializer, rpcProtocolBuilder);
+        StartUp startUp = new StartUp(new NettyServer(rpcProtocolBuilder)
+        );
         startUp.startServer();
 
 //        Object send = startUp.send("hello");

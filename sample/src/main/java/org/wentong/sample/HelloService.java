@@ -1,6 +1,7 @@
 package org.wentong.sample;
 
 import org.wentong.annotations.RPCService;
+import org.wentong.client.callback.Callback;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -14,6 +15,7 @@ public interface HelloService {
 
     CompletableFuture<String> asyncSyaHello2(String name, long millSeconds);
 
+    String helloCallback(String name, Callback<String> callback);
 
 
 }

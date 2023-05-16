@@ -2,6 +2,7 @@ package org.wentong.sample;
 
 import lombok.SneakyThrows;
 import org.wentong.annotations.RPCServiceImpl;
+import org.wentong.client.callback.Callback;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -33,6 +34,11 @@ public class HelloServiceImpl implements HelloService {
     public CompletableFuture<String> asyncSyaHello2(String name, long millSeconds) {
         TimeUnit.MILLISECONDS.sleep(millSeconds);
         return CompletableFuture.completedFuture("Hello2 " + name);
+    }
+
+    @Override
+    public String helloCallback(String name, Callback<String> callback) {
+        return "Hello callback" + name;
     }
 
 }
