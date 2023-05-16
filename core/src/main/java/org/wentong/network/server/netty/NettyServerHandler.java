@@ -25,11 +25,11 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         protocolData.setMessageId(rpcCommand.getMessageId());
         ChannelFuture channelFuture = ctx.writeAndFlush(protocolData);
         channelFuture.addListener(future -> {
-            if (future.isSuccess()) {
-                System.out.println("服务端发送消息成功");
-            } else {
-                System.out.println("服务端发送消息失败");
-            }
+//            if (future.isSuccess()) {
+//                System.out.println("服务端发送消息成功");
+//            } else {
+//                System.out.println("服务端发送消息失败");
+//            }
         });
 
     }

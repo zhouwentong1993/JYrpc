@@ -60,7 +60,13 @@ public class ProxyFactory {
         builder.messageType(Constant.ProtocolConstant.MessageType.invoke);
         builder.serializeType(hessianSerializer);
         builder.headerExtend(serializer.serialize(new Header(clazz.getName(), method.getName(), method.getParameterTypes())));
-        builder.payload(serializer.serialize(args));
+
+        Object[] temp = new Object[args.length];
+        ArrayUtil.copy(args, temp, args.length);
+        if (methodHasParam(method, Callback.class)) {
+            temp[temp.length - 1] = null;
+        }
+        builder.payload(serializer.serialize(temp));
         RpcCommand build = builder.build();
         build.setHeaderSize(build.getHeaderTotalSize());
         build.setTotalSize(build.getHeaderSize() + build.getPayload().length);
