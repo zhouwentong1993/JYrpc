@@ -18,7 +18,6 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println(msg);
         RpcCommand rpcCommand = (RpcCommand) msg;
         Object result = new Invoker().invoke(new Parser(rpcProtocolBuilder).parse(rpcCommand));
         RpcCommand protocolData = rpcProtocolBuilder.getProtocolData(result);

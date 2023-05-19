@@ -35,7 +35,6 @@ public class NettyServer extends ServiceThread implements Server {
         this.rpcProtocolBuilder = rpcProtocolBuilder;
     }
 
-
     @Override
     public void startServer() {
         start();
