@@ -1,7 +1,7 @@
 package org.wentong.sample;
 
 import lombok.SneakyThrows;
-import org.wentong.annotations.RPCServiceImpl;
+import org.wentong.annotations.service.RPCServiceImpl;
 import org.wentong.client.callback.Callback;
 
 import java.util.concurrent.CompletableFuture;

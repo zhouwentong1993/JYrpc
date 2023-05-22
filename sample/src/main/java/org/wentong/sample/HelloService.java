@@ -1,6 +1,6 @@
 package org.wentong.sample;
 
-import org.wentong.annotations.RPCService;
+import org.wentong.annotations.service.RPCService;
 import org.wentong.client.callback.Callback;
 
 import java.util.concurrent.CompletableFuture;

@@ -13,9 +13,14 @@ public class Constant {
         }
 
         public static class MessageType {
+
             public static int invoke = 1;
 
             public static int heartbeat = 2;
+
+            public static int nameserver = 3;
+
+
         }
     }
 

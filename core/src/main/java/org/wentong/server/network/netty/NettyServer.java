@@ -1,4 +1,4 @@
-package org.wentong.network.server.netty;
+package org.wentong.server.network.netty;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -11,7 +11,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.EventExecutorGroup;
 import lombok.extern.slf4j.Slf4j;
-import org.wentong.network.server.Server;
+import org.wentong.server.network.Server;
 import org.wentong.protocol.RpcProtocolBuilder;
 import org.wentong.protocol.netty.NettyHessianDecoder;
 import org.wentong.protocol.netty.NettyHessianEncoder;

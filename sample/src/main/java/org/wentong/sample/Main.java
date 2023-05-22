@@ -3,7 +3,7 @@ package org.wentong.sample;
 import lombok.extern.slf4j.Slf4j;
 import org.wentong.client.callback.Callback;
 import org.wentong.client.proxy.ProxyFactory;
-import org.wentong.network.server.netty.NettyServer;
+import org.wentong.server.network.netty.NettyServer;
 import org.wentong.protocol.RpcCommand;
 import org.wentong.protocol.RpcProtocolBuilder;
 import org.wentong.protocol.serialize.impl.hessian.HessianDeserializer;

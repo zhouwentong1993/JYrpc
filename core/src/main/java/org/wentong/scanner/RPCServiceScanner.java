@@ -3,7 +3,7 @@ package org.wentong.scanner;
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.util.ClassUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.wentong.annotations.RPCServiceImpl;
+import org.wentong.annotations.service.RPCServiceImpl;
 
 import java.util.HashMap;
 import java.util.Map;

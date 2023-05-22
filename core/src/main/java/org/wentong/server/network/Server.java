@@ -1,4 +1,4 @@
-package org.wentong.network.server;
+package org.wentong.server.network;
 
 public interface Server {
 

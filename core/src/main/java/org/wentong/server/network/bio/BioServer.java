@@ -1,10 +1,10 @@
-package org.wentong.network.server.bio;
+package org.wentong.server.network.bio;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.wentong.dispatcher.Invoker;
 import org.wentong.dispatcher.Parser;
-import org.wentong.network.server.Server;
+import org.wentong.server.network.Server;
 import org.wentong.protocol.RpcProtocolBuilder;
 import org.wentong.thread.ServiceThread;
 
