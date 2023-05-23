@@ -3,11 +3,13 @@ package org.wentong.sample;
 import lombok.extern.slf4j.Slf4j;
 import org.wentong.client.callback.Callback;
 import org.wentong.client.proxy.ProxyFactory;
-import org.wentong.server.network.netty.NettyServer;
 import org.wentong.protocol.RpcCommand;
 import org.wentong.protocol.RpcProtocolBuilder;
 import org.wentong.protocol.serialize.impl.hessian.HessianDeserializer;
 import org.wentong.protocol.serialize.impl.hessian.HessianSerializer;
+import org.wentong.server.network.netty.NettyServer;
+
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class Main {
@@ -22,8 +24,8 @@ public class Main {
         startUp.startServer();
 
         // 确保 server 启动完成
-//        TimeUnit.SECONDS.sleep(3);
-//        log.info("after sleep 3 seconds, sending request.");
+        TimeUnit.SECONDS.sleep(1);
+        log.info("after sleep 1 seconds, sending request.");
 
         HelloService refer = ProxyFactory.refer(HelloService.class);
         String wentong = refer.sayHello("wentong");
@@ -36,6 +38,8 @@ public class Main {
             }
         };
         refer.helloCallback("wentong", callback);
+        System.err.println("Server ok!");
+        System.exit(1);
 
     }
 

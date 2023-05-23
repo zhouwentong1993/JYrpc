@@ -23,7 +23,7 @@ public class MessageHandlerScanner {
             MessageHandler annotation = AnnotationUtil.getAnnotation(c, MessageHandler.class);
             if (annotation != null) {
                 try {
-                    HANDLER_MAP.put(c.getInterfaces()[0].getName(), (MessageTypeHandler) c.getDeclaredConstructor().newInstance());
+                    HANDLER_MAP.put(c.getName(), (MessageTypeHandler) c.getDeclaredConstructor().newInstance());
                 } catch (Exception e) {
                     log.error("初始化消息处理器失败，消息名称：{}", c.getName(), e);
                 }
@@ -36,7 +36,7 @@ public class MessageHandlerScanner {
     }
 
     public static List<MessageTypeHandler> allHandlers() {
-        return (List<MessageTypeHandler>) HANDLER_MAP.values();
+        return HANDLER_MAP.values().stream().toList();
     }
 
 }

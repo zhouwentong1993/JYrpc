@@ -9,6 +9,9 @@ import org.wentong.dispatcher.Parser;
 import org.wentong.protocol.RpcCommand;
 import org.wentong.protocol.RpcProtocolBuilder;
 
+/**
+ * 服务端的调用 Handler，负责路由到指定的方法，并将返回值写回。
+ */
 @MessageHandler
 public class InvokeMessageHandler implements MessageTypeHandler {
 
