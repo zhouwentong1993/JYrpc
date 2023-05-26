@@ -1,4 +1,4 @@
-package org.wentong.annotations.message;
+package org.wentong.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

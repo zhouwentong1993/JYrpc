@@ -18,7 +18,7 @@ public class Constant {
 
             public static int heartbeat = 2;
 
-            public static int nameserver = 3;
+            public static int client_nameserver = 3;
 
 
         }

@@ -3,7 +3,7 @@ package org.wentong.scanner;
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.util.ClassUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.wentong.annotations.message.MessageHandler;
+import org.wentong.annotations.MessageHandler;
 import org.wentong.server.network.netty.message.MessageTypeHandler;
 
 import java.util.HashMap;
