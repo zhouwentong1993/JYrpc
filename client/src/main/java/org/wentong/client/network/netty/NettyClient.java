@@ -44,10 +44,5 @@ public class NettyClient {
             if (channel == null || !channel.isActive()) {
                 throw new IllegalStateException();
             }
-            // Wait until the connection is closed.
-//            f.channel().closeFuture().sync();
-//        } finally {
-//            workerGroup.shutdownGracefully();
-//        }
     }
 }
