@@ -1,6 +1,6 @@
 package org.wentong.client.router;
 
-import org.wentong.client.exception.ConnectedException;
+import org.wentong.client.exception.ConnectionException;
 import org.wentong.client.transport.NettyTransportFactory;
 import org.wentong.client.transport.Transport;
 
@@ -24,7 +24,7 @@ public class OneToOneRouter implements Router {
         try {
             return NettyTransportFactory.create(uri);
         } catch (Exception e) {
-            throw new ConnectedException(e);
+            throw new ConnectionException(e);
         }
     }
 

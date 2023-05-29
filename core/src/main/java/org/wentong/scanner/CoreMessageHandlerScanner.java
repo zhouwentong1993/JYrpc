@@ -1,9 +1,8 @@
 package org.wentong.scanner;
 
-import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.util.ClassUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.wentong.annotations.MessageHandler;
+import org.wentong.exception.InitializationException;
 import org.wentong.server.network.netty.message.MessageTypeHandler;
 
 import java.util.HashMap;
@@ -12,23 +11,23 @@ import java.util.Map;
 import java.util.Set;
 
 @Slf4j
-public class MessageHandlerScanner {
+public class CoreMessageHandlerScanner {
 
     private static final Map<String, MessageTypeHandler> HANDLER_MAP = new HashMap<>();
 
     static {
-        String packageName = "org.wentong";
-        Set<Class<?>> classes = ClassUtil.scanPackage(packageName);
-        classes.forEach(c -> {
-            MessageHandler annotation = AnnotationUtil.getAnnotation(c, MessageHandler.class);
-            if (annotation != null) {
+        Class<MessageTypeHandler> interfaceClass = MessageTypeHandler.class;
+        String packageName = MessageTypeHandler.class.getPackage().getName();
+        Set<Class<?>> allClasses = ClassUtil.scanPackage(packageName);
+        for (Class<?> clazz : allClasses) {
+            if (interfaceClass.isAssignableFrom(clazz) && !interfaceClass.equals(clazz)) {
                 try {
-                    HANDLER_MAP.put(c.getName(), (MessageTypeHandler) c.getDeclaredConstructor().newInstance());
+                    HANDLER_MAP.put(clazz.getName(), (MessageTypeHandler) clazz.getDeclaredConstructor().newInstance());
                 } catch (Exception e) {
-                    log.error("初始化消息处理器失败，消息名称：{}", c.getName(), e);
+                    throw new InitializationException(e);
                 }
             }
-        });
+        }
     }
 
     public static MessageTypeHandler getHandler(String handlerName) {

@@ -11,12 +11,19 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.EventExecutorGroup;
 import lombok.extern.slf4j.Slf4j;
+import org.wentong.protocol.RpcProtocolBuilder;
 import org.wentong.protocol.netty.NettyHessianDecoder;
 import org.wentong.protocol.netty.NettyHessianEncoder;
 import org.wentong.thread.ServiceThread;
 
 @Slf4j
 public class NameServer extends ServiceThread {
+
+    private final RpcProtocolBuilder rpcProtocolBuilder;
+
+    public NameServer(RpcProtocolBuilder rpcProtocolBuilder) {
+        this.rpcProtocolBuilder = rpcProtocolBuilder;
+    }
 
     @Override
     public String getServiceName() {
@@ -42,7 +49,7 @@ public class NameServer extends ServiceThread {
                             // 注册自己的处理器
                             socketChannel.pipeline().addLast("decoder", new NettyHessianDecoder());
                             socketChannel.pipeline().addLast("encoder", new NettyHessianEncoder());
-                            socketChannel.pipeline().addLast(businessGroup, new NameServerHandler());
+                            socketChannel.pipeline().addLast(businessGroup, new NameServerHandler(rpcProtocolBuilder));
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)

@@ -8,5 +8,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface RPCServiceImpl {
+
     String name() default "";
+
 }

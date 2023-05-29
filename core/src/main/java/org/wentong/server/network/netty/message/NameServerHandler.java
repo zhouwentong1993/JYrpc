@@ -2,12 +2,10 @@ package org.wentong.server.network.netty.message;
 
 import io.netty.channel.ChannelHandlerContext;
 import lombok.NonNull;
-import org.wentong.annotations.MessageHandler;
 import org.wentong.constant.Constant;
 import org.wentong.protocol.RpcCommand;
 import org.wentong.protocol.RpcProtocolBuilder;
 
-@MessageHandler
 public class NameServerHandler implements MessageTypeHandler {
 
     @Override

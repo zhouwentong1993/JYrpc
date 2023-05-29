@@ -5,7 +5,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
 import org.wentong.protocol.RpcCommand;
 import org.wentong.protocol.RpcProtocolBuilder;
-import org.wentong.scanner.MessageHandlerScanner;
+import org.wentong.scanner.CoreMessageHandlerScanner;
 
 @Slf4j
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
@@ -19,7 +19,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         RpcCommand rpcCommand = (RpcCommand) msg;
-        MessageHandlerScanner.allHandlers().stream()
+        CoreMessageHandlerScanner.allHandlers().stream()
                 .filter(messageTypeHandler -> messageTypeHandler.accept(rpcCommand))
                 .findFirst()
                 .ifPresent(messageTypeHandler -> {
