@@ -8,13 +8,17 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 注册中心，负责维护核心数据结构
  */
-public class Registry {
+public class NameserverRegistry {
 
     private static final Map<String, List<URI>> SERVER_MAP = new ConcurrentHashMap<>();
 
     private static final Map<String, List<URI>> CLIENT_MAP = new ConcurrentHashMap<>();
 
     private static final Map<String, List<String>> CLIENT_REGISTER_MAP = new ConcurrentHashMap<>();
+
+    public static List<URI> getServer(String serviceName) {
+        return SERVER_MAP.get(serviceName);
+    }
 
     public static void registerServer(String serviceName, URI uri) {
         List<URI> uris = SERVER_MAP.get(serviceName);

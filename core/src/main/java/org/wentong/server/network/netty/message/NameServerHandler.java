@@ -16,6 +16,6 @@ public class NameServerHandler implements MessageTypeHandler {
 
     @Override
     public boolean accept(@NonNull RpcCommand rpcCommand) {
-        return rpcCommand.getMessageType() == Constant.ProtocolConstant.MessageType.client_nameserver;
+        return rpcCommand.getMessageType() == Constant.ProtocolConstant.MessageType.client_lookup;
     }
 }

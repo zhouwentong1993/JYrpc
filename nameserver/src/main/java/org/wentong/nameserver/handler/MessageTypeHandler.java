@@ -6,7 +6,7 @@ import org.wentong.protocol.RpcProtocolBuilder;
 
 public interface MessageTypeHandler {
 
-    void handle(ChannelHandlerContext ctx, RpcCommand msg, RpcProtocolBuilder rpcProtocolBuilder ) throws Exception;
+    void handle(ChannelHandlerContext ctx, RpcCommand msg, RpcProtocolBuilder rpcProtocolBuilder) throws Exception;
 
     boolean accept(RpcCommand rpcCommand);
 
