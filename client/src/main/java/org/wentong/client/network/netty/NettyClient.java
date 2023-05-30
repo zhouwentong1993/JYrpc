@@ -23,7 +23,7 @@ public class NettyClient {
         inFlightRequests = new InFlightRequests();
 
         EventLoopGroup workerGroup = new NioEventLoopGroup();
-//        try {
+
             Bootstrap b = new Bootstrap();
             b.group(workerGroup);
             b.channel(NioSocketChannel.class);
