@@ -1,10 +1,7 @@
-package org.wentong.client.nameserver.longpolling;
+package org.wentong.client.nameserver;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -13,11 +10,11 @@ import org.wentong.protocol.netty.NettyHessianEncoder;
 
 import java.net.URI;
 
-public class LongPollingService implements Runnable {
+public class LookupAddressService implements Runnable {
 
     private final URI uri;
 
-    public LongPollingService(URI uri) {
+    public LookupAddressService(URI uri) {
         this.uri = uri;
     }
 
@@ -34,11 +31,13 @@ public class LongPollingService implements Runnable {
                 public void initChannel(SocketChannel ch) {
                     ch.pipeline().addLast("decoder", new NettyHessianDecoder());
                     ch.pipeline().addLast("encoder", new NettyHessianEncoder());
-                    ch.pipeline().addLast(new LongPollingHandler());
+                    ch.pipeline().addLast(new NameserverMsgHandler());
                 }
             });
             ChannelFuture future = b.connect(uri.getHost(), uri.getPort()).sync();
-            future.channel().closeFuture().sync();
+            Channel channel = future.channel();
+            channel.writeAndFlush(null);
+            channel.closeFuture().sync();
 
         } catch (InterruptedException e) {
             throw new IllegalArgumentException(e);

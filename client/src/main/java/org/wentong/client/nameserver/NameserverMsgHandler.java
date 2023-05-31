@@ -1,4 +1,4 @@
-package org.wentong.client.nameserver.longpolling;
+package org.wentong.client.nameserver;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.wentong.protocol.RpcCommand;
 
 @Slf4j
-public class LongPollingHandler extends ChannelInboundHandlerAdapter {
+public class NameserverMsgHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {

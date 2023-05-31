@@ -1,4 +1,4 @@
-package org.wentong.client.nameserver.longpolling;
+package org.wentong.client.nameserver;
 
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-public class LongPollingManager extends ServiceThread {
+public class LookupServiceManager extends ServiceThread {
 
     @Override
     public String getServiceName() {
@@ -28,7 +28,7 @@ public class LongPollingManager extends ServiceThread {
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(uris.size());
 
         // 每隔 30s 执行一次，每次 long polling 15s
-        uris.forEach(uri -> executor.schedule(new LongPollingService(uri), 30, TimeUnit.SECONDS));
+        uris.forEach(uri -> executor.schedule(new LookupAddressService(uri), 30, TimeUnit.SECONDS));
     }
 
 
