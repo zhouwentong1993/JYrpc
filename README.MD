@@ -34,6 +34,7 @@ JYrpc 目前只支持 JSON 和 hessian 两种序列化模式。可以通过实�
 ### 动态代理
 ## 高级功能
 ### 插件式架构
+### spi 机制
 ### 服务注册中心
 ![服务注册中心](./docs/images/nameserver.png)
 JYrpc 未来会支持多种服务注册中心，包括 Zookeeper、Etcd、Nacos 等。你可以通过配置文件指定使用哪种注册中心，也可以通过 SPI 机制自定义注册中心。
