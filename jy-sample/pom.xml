@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>nameserver</artifactId>
+    <artifactId>jy-sample</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -17,17 +17,29 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+
     <dependencies>
         <dependency>
             <groupId>org.wentong</groupId>
-            <artifactId>protocol</artifactId>
+            <artifactId>jy-protocol</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.wentong</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>jy-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wentong</groupId>
+            <artifactId>jy-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wentong</groupId>
+            <artifactId>jy-client</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
+
 
 </project>

@@ -9,13 +9,13 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>client</module>
-        <module>core</module>
-        <module>protocol</module>
-        <module>sample</module>
-        <module>common</module>
-        <module>nameserver</module>
-        <module>extension</module>
+        <module>jy-client</module>
+        <module>jy-core</module>
+        <module>jy-protocol</module>
+        <module>jy-sample</module>
+        <module>jy-common</module>
+        <module>jy-nameserver</module>
+        <module>jy-extension</module>
     </modules>
 
     <properties>
