@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class SpiLoader<T> {
+public class SpiLoader {
 
     private static final String SPI_PREFIX = "META-INF/services/";
 
@@ -49,6 +49,4 @@ public class SpiLoader<T> {
     public static <T> T load(final Class<T> clazz) {
         return (T) CONTAINER.get(clazz);
     }
-
-
 }
