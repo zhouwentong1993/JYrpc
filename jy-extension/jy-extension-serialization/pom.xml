@@ -5,21 +5,24 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.wentong</groupId>
-        <artifactId>JYrpc</artifactId>
+        <artifactId>jy-extension</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>jy-extension</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>jy-extension-core</module>
-        <module>jy-extension-serialization</module>
-    </modules>
+    <artifactId>jy-extension-serialization</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.wentong</groupId>
+            <artifactId>jy-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>
