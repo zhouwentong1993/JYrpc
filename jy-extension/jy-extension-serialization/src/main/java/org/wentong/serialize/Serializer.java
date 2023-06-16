@@ -7,6 +7,7 @@ public interface Serializer<T> {
 
     /**
      * serialize t to byte array
+     *
      * @param t source object
      * @return byte array
      */
